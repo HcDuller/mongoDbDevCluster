@@ -11,8 +11,8 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: root
-      MONGODB_INITDB_ROOT_PASSWORD: example
+      MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
       - mongo1_data:/data/db
@@ -29,8 +29,8 @@ services:
     networks:
       - mongo-net
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: root
-      MONGODB_INITDB_ROOT_PASSWORD: example
+      MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
       - mongo2_data:/data/db
@@ -46,8 +46,8 @@ services:
     networks:
       - mongo-net
     environment:
-      MONGODB_INITDB_ROOT_USERNAME: root
-      MONGODB_INITDB_ROOT_PASSWORD: example
+      MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
+      MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
       - mongo3_data:/data/db
