@@ -6,16 +6,17 @@ services:
     container_name: mongo1
     hostname: mongo1
     user: "root"
-    networks:
-      - mongo-net
+    restart: unless-stopped
     ports:
       - "27017:27017"
+    networks:
+      - mongo-net
     environment:
       MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
-      - mongo1_data:/data/db
+      - _mongo1:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
       - ./init-mongo.js:/etc/init-mongo.js
 
@@ -24,6 +25,7 @@ services:
     container_name: mongo2
     hostname: mongo2
     user: "root"
+    restart: unless-stopped
     ports:
       - "27018:27017"
     networks:
@@ -33,7 +35,7 @@ services:
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
-      - mongo2_data:/data/db
+      - _mongo2:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
 
   mongo3:
@@ -41,6 +43,7 @@ services:
     container_name: mongo3
     hostname: mongo3
     user: "root"
+    restart: unless-stopped
     ports:
       - "27019:27017"
     networks:
@@ -50,7 +53,7 @@ services:
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
     command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
     volumes:
-      - mongo3_data:/data/db
+      - _mongo3:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
 
 networks:
@@ -58,6 +61,6 @@ networks:
     driver: bridge
 
 volumes:
-  mongo1_data:
-  mongo2_data:
-  mongo3_data:
+  _mongo1:
+  _mongo2:
+  _mongo3:

@@ -49,26 +49,28 @@ while (retries-- > 0) {
 }
 
 if (primaryElected) {
-  const dbName = "ajduller_homologacao";
-  const collectionName = "rfb";
+  const dbs = ["producao", "homologacao"]
+  dbs.forEach((dbName) => {
+    const collectionName = "dummy";
 
-  const targetDB = replAdmin.getSiblingDB(dbName);
-  if (!targetDB.getUser(process.env.MONGODB_INITDB_ROOT_USERNAME)) {
-    print("👤 Creating root user...");
-    targetDB.createUser({
-      user: process.env.MONGODB_INITDB_ROOT_USERNAME,
-      pwd: process.env.MONGODB_INITDB_ROOT_PASSWORD,
-      roles: [{ role: "root", db: "admin" }]
-    });
-  } else {
-    print("✅ Root user already exists, skipping...");
-  }
-  // Create collection if it doesn't exist
-  if (!targetDB.getCollectionNames().includes(collectionName)) {
-    print(`📂 Creating collection '${collectionName}' in database '${dbName}'`);
-    targetDB.createCollection(collectionName);
-    targetDB[collectionName].insertOne({ _init: true })
-  } else {
-    print(`✅ Collection '${collectionName}' already exists`);
-  }
+    const targetDB = replAdmin.getSiblingDB(dbName);
+    if (!targetDB.getUser(process.env.MONGODB_INITDB_ROOT_USERNAME)) {
+      print("👤 Creating root user...");
+      targetDB.createUser({
+        user: process.env.MONGODB_INITDB_ROOT_USERNAME,
+        pwd: process.env.MONGODB_INITDB_ROOT_PASSWORD,
+        roles: [{ role: "root", db: "admin" }]
+      });
+    } else {
+      print("✅ Root user already exists, skipping...");
+    }
+    // Create collection if it doesn't exist
+    if (!targetDB.getCollectionNames().includes(collectionName)) {
+      print(`📂 Creating collection '${collectionName}' in database '${dbName}'`);
+      targetDB.createCollection(collectionName);
+      targetDB[collectionName].insertOne({ _init: true })
+    } else {
+      print(`✅ Collection '${collectionName}' already exists`);
+    }
+  })
 }
