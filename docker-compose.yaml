@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   mongo1:
-    image: mongodb/mongodb-community-server:7.0.24-rc0-ubi8
+    image: mongodb/mongodb-community-server:latest
     container_name: mongo1
     hostname: mongo1
     user: "root"
@@ -14,44 +14,44 @@ services:
     environment:
       MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
-    command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
+    command: mongod --logpath /var/log/mongodb/mongod.log --logappend --dbpath /data/db --port 27017 --bind_ip_all --keyFile /etc/mongo-keyfile --replSet rs0
     volumes:
       - _mongo1:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
       - ./init-mongo.js:/etc/init-mongo.js
 
   mongo2:
-    image: mongodb/mongodb-community-server:7.0.24-rc0-ubi8
+    image: mongodb/mongodb-community-server:latest
     container_name: mongo2
     hostname: mongo2
     user: "root"
     restart: unless-stopped
     ports:
-      - "27018:27017"
+      - "27018:27018"
     networks:
       - mongo-net
     environment:
       MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
-    command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
+    command: mongod --logpath /var/log/mongodb/mongod.log --logappend --dbpath /data/db --port 27018 --bind_ip_all --keyFile /etc/mongo-keyfile --replSet rs0
     volumes:
       - _mongo2:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
 
   mongo3:
-    image: mongodb/mongodb-community-server:7.0.24-rc0-ubi8
+    image: mongodb/mongodb-community-server:latest
     container_name: mongo3
     hostname: mongo3
     user: "root"
     restart: unless-stopped
     ports:
-      - "27019:27017"
+      - "27019:27019"
     networks:
       - mongo-net
     environment:
       MONGODB_INITDB_ROOT_USERNAME: ${MONGODB_INITDB_ROOT_USERNAME}
       MONGODB_INITDB_ROOT_PASSWORD: ${MONGODB_INITDB_ROOT_PASSWORD}
-    command: ["--logpath","/var/log/mongodb/mongod.log","--logappend","--dbpath","/data/db","--port","27017","--bind_ip","0.0.0.0","--keyFile","/etc/mongo-keyfile","--replSet","rs0"]
+    command: mongod --logpath /var/log/mongodb/mongod.log --logappend --dbpath /data/db --port 27019 --bind_ip_all --keyFile /etc/mongo-keyfile --replSet rs0
     volumes:
       - _mongo3:/data/db
       - ./mongo-keyfile:/etc/mongo-keyfile:ro
