@@ -36,7 +36,7 @@ const replConn = new Mongo(
     process.env.MONGODB_INITDB_ROOT_USERNAME +
     ":" +
     process.env.MONGODB_INITDB_ROOT_PASSWORD +
-    "@mongo1:27017,mongo2:27017,mongo3:27017/admin?replicaSet=rs0",
+    "@mongo1:27017,mongo2:27018,mongo3:27019/admin?replicaSet=rs0",
 );
 const replAdmin = replConn.getDB("admin");
 
