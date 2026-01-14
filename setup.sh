@@ -51,7 +51,6 @@ else
 fi
 set +a
 
-docker-compose down -v && docker-compose up -d
+docker compose down -v && docker compose up -d
 sleep 15s && docker exec -u root mongo1 mongosh "mongodb://${MONGODB_INITDB_ROOT_USERNAME}:${MONGODB_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/admin?serverSelectionTimeoutMS=2000" --eval 'load("/etc/init-mongo.js")'
 #final connection string "mongodb://usr:psw@mongo1:27017,mongo2:27018,mongo3:27019/admin?serverSelectionTimeoutMS=2000&replicaSet=rs0"
-
